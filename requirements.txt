@@ -1,0 +1,6 @@
+Flask
+gunicorn
+SpeechRecognition
+gTTS
+deep-translator
+Flask-CORS
