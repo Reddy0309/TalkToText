@@ -1,0 +1,5 @@
+.env
+.ngrok.exe
+.translation.mp3
+
+node_modules/

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TALK TO TEXT</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Arima&display=swap" rel="stylesheet">
+
+    <style>
+        /* Background gradient animation */
+        body {
+            background: linear-gradient(45deg, #ef7fa4, #5b90cd, #F5BB00);
+            background-size: 400% 400%;
+            animation: gradientAnimation 5s ease infinite;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        .highlight-button {
+            background-color: #f54141;
+            color: #efdddd;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .highlight-button:hover {
+            background-color: #ed7b17;
+        }
+
+        /* Popup Styles */
+        .popup {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            padding-top: 60px; /* Location of the box */
+        }
+
+        .popup-content {
+            background-color: #fefefe;
+            margin: 5% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .container {
+            max-width: 1000px; /* Reduced width */
+            margin-top: 50px;
+        }
+
+        .card {
+            
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        h2 {
+            font-family: 'Arima', cursive;
+            font-size: 60px;
+            font-weight: bold;
+            padding: 15px 0;
+            color: #f8f3f3;
+            text-shadow: 7px 7px 6px rgba(0, 0, 0, 0.3);
+            text-transform: uppercase;
+            text-align: center;
+            animation: fadeInScale 1.5s ease forwards, pulse1 1.5s ease-in-out infinite;/* Ensure 'forwards' to keep the final state */
+            opacity: 0;
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse1 {
+            0%, 100% {
+                transform: scale(1); /* Original size */
+            }
+            50% {
+                transform: scale(1.05); /* Slightly larger */
+            }
+        }
+
+        #micBtn {
+            font-size: 30px;
+            width: 70px;
+            height: 70px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #micBtn.btn-success {
+            background-color: #28a745;
+            color: white;
+            box-shadow: 0px 0px 15px rgba(40, 167, 69, 0.6);
+        }
+
+        #micBtn.btn-danger {
+            background-color: #dc3545;
+            color: white;
+            box-shadow: 0px 0px 15px rgba(220, 53, 69, 0.6);
+        }
+
+        /* Button hover effects */
+        #micBtn:hover {
+            transform: scale(1.2);
+            box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Pulse animation */
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="text-center">Talk To Text</h2>
+
+        <div class="text-center button-container"><br/>
+        <button id="helpBtn" class="highlight-button">
+             Help
+        </button>
+        </div>
+        <br/>
+        <div class="card p-5 shadow-sm">
+            <select id="language" class="form-select mb-3">
+                <option value="1">Hindi</option>
+                <option value="2">Telugu</option>
+                <option value="3">Kannada</option>
+                <option value="4">English</option>
+            </select>
+
+            <div class="text-center"><br/>
+                <button id="micBtn" class="btn btn-success rounded-circle">
+                    <i class="fa-solid fa-microphone"></i>
+                </button>
+            </div>
+
+            <div id="result" class="mt-4"></div>
+        </div>
+    </div>
+
+    <div id="helpPopup" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <h3>User Manual for "Talk to Text"</h3>
+            <p>Welcome to the Talk to Text Application!</p>
+            <p>This application allows you to convert your spoken words in various native languages into English text and serves as an effective translation tool.</p>
+            <h5>Instructions:</h5>
+            <ol>
+                <li><strong>Select Your Language:</strong> Begin by choosing the language you wish to speak and record your speech in from the dropdown menu provided.</li>
+                <li><strong>Start Recording:</strong> Click the green microphone button below to initiate recording. When the microphone icon turns red, it indicates that your speech is being recorded for translation.</li>
+                <li><strong>Stop Recording:</strong> Once you have finished speaking, click the red microphone button. The icon will revert to green, signifying that the recording has stopped, and your speech is now being translated.</li>
+                <li><strong>View Results:</strong> After the translation process, you will see the text of what you spoke along with its English translation displayed on the screen.</li>
+            </ol>
+            <p>Thank you for using the Talk to Text application!</p>
+            <p>Click on Close or anywhere in the window to Close and Continue.</p>
+        </div>
+    </div>
+
+    <script>
+
+        // Get the modal
+        const helpPopup = document.getElementById("helpPopup");
+        const helpBtn = document.getElementById("helpBtn");
+        const closeBtn = document.getElementsByClassName("close")[0];
+
+        // Show the popup when the help button is clicked
+        helpBtn.onclick = function() {
+            helpPopup.style.display = "block";
+        }
+
+        // Close the popup when the user clicks on <span> (x)
+        closeBtn.onclick = function() {
+            helpPopup.style.display = "none";
+        }
+
+        // Close the popup when the user clicks anywhere outside of the popup
+        window.onclick = function(event) {
+            if (event.target == helpPopup) {
+                helpPopup.style.display = "none";
+            }
+        }
+
+        const micBtn = document.getElementById('micBtn');
+        const resultDiv = document.getElementById('result');
+        const languageSelect = document.getElementById('language');
+        let isRecording = false;
+
+        
+        const API_URL = process.env.API_URL;
+
+        async function handleSpeechToText() {
+            const languageChoice = languageSelect.value;
+
+            try {
+                const response = await axios.post(API_URL, { language_choice: languageChoice });
+                const { command, translation } = response.data;
+
+                resultDiv.innerHTML = `
+                    <div class="alert alert-secondary">You Said: ${command}</div>
+                    <div class="alert alert-success">Translation: ${translation}</div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="alert alert-danger">Error: ${error.response?.data?.error || 'Failed to record'}</div>
+                `;
+            }
+        }
+
+        micBtn.addEventListener('click', () => {
+            isRecording = !isRecording;
+
+            if (isRecording) {
+                micBtn.classList.remove('btn-success');
+                micBtn.classList.add('btn-danger', 'pulse'); // Add pulse animation
+                resultDiv.innerHTML = `<div class="alert alert-info">Listening...</div>`;
+                handleSpeechToText(); // Start recording and translation
+            } else {
+                micBtn.classList.remove('btn-danger', 'pulse');
+                micBtn.classList.add('btn-success');
+                resultDiv.innerHTML += `<div class="alert alert-info">Recording stopped.</div>`;
+            }
+        });
+    </script>
+</body>
+
+</html>
