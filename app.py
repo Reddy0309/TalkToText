@@ -19,7 +19,7 @@ languages = {
     "4": {"name": "English", "code": "en"}
 }
 
-@app.route('/speechtotext', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def Speechtotext():
     if request.method == 'GET':
         return jsonify({"message": "Welcome to the Speech-to-Text API! Use POST to send audio data with a language choice."})
