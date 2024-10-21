@@ -20,8 +20,4 @@ jsonschema==4.22.0
 jsonschema-specifications==2023.12.1
 langdetect==1.0.9
 pillow==10.3.0
-<<<<<<< HEAD
 SpeechRecognition==3.10.4
-=======
-SpeechRecognition==3.10.4
->>>>>>> 75d1fd7900f59ebe24dea995e0c8ba5696f70c8b
