@@ -63,7 +63,6 @@ hpack==3.0.0
 hstspreload==2024.7.1
 httpcore==0.9.1
 httplib2==0.22.0
-httpx==0.13.3
 hyperframe==5.2.0
 idna==2.10
 ipykernel==6.29.4
@@ -84,7 +83,6 @@ jupyter_client==8.6.2
 jupyter_core==5.7.2
 jupyter_server==2.14.1
 jupyter_server_terminals==0.5.3
-jupyterlab==4.2.2
 jupyterlab_pygments==0.3.0
 jupyterlab_server==2.27.2
 kiwisolver==1.4.5
@@ -134,8 +132,6 @@ pySmartDL==1.3.4
 python-dateutil==2.9.0.post0
 python-json-logger==2.0.7
 pytz==2024.1
-pywin32==306
-pywinpty==2.0.13
 PyYAML==6.0.1
 pyzmq==26.0.3
 redis==5.0.8
