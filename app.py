@@ -19,6 +19,11 @@ languages = {
     "4": {"name": "English", "code": "en"}
 }
 
+
+@app.route('/')
+def home():
+    return "Welcome to my Flask application!"
+    
 @app.route('/Speechtotext', methods=['POST'])
 def Speechtotext():
     data = request.get_json()
