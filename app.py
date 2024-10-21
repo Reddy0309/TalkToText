@@ -19,8 +19,11 @@ languages = {
     "4": {"name": "English", "code": "en"}
 }
 
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify({"message": "Welcome to the Speech-to-Text API! Use POST /speechtotext with a language choice."})
 
-@app.route('/', methods=['POST'])
+@app.route('/speechtotext', methods=['POST'])
 def Speechtotext():
     data = request.get_json()
     language_choice = data.get('language_choice', '4')  # Default to English if not provided
