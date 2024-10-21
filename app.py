@@ -19,49 +19,48 @@ languages = {
     "4": {"name": "English", "code": "en"}
 }
 
-@app.route('/', methods=['GET'])
-def home():
-    return jsonify({"message": "Welcome to the Speech-to-Text API! Use POST /speechtotext with a language choice."})
-
-@app.route('/speechtotext', methods=['POST'])
+@app.route('/speechtotext', methods=['GET', 'POST'])
 def Speechtotext():
-    data = request.get_json()
-    language_choice = data.get('language_choice', '4')  # Default to English if not provided
+    if request.method == 'GET':
+        return jsonify({"message": "Welcome to the Speech-to-Text API! Use POST to send audio data with a language choice."})
+    if request.method == 'POST':     
+        data = request.get_json()
+        language_choice = data.get('language_choice', '4')  # Default to English if not provided
     
-    if language_choice not in languages:
-        return jsonify({"error": "Invalid language choice"}), 400
+        if language_choice not in languages:
+            return jsonify({"error": "Invalid language choice"}), 400
     
-    selected_language = languages[language_choice]
+        selected_language = languages[language_choice]
     
-    try:
-        with sr.Microphone() as source:
-            listener.adjust_for_ambient_noise(source)
-            print("Listening...")
-            voice = listener.listen(source)
+        try:
+            with sr.Microphone() as source:
+                listener.adjust_for_ambient_noise(source)
+                print("Listening...")
+                voice = listener.listen(source)
             
-            command = listener.recognize_google(voice, language=selected_language['code'])
-            print(f"You said: {command}")
+                command = listener.recognize_google(voice, language=selected_language['code'])
+                print(f"You said: {command}")
 
-            if selected_language['code'] != "en":
-                translation = GoogleTranslator(source=selected_language['code'], target='en').translate(command)
-            else:
-                translation = command
+                if selected_language['code'] != "en":
+                    translation = GoogleTranslator(source=selected_language['code'], target='en').translate(command)
+                else:
+                    translation = command
                 
                 
-            print(f"Translation: {translation}")
+                print(f"Translation: {translation}")
 
-            converted = gTTS(translation, lang='en')
-            converted.save("translation.mp3")
-            response = jsonify({"command": command, "translation": translation})
-            response.headers.add('Access-Control-Allow-Origin', '*')  # Adjust as needed
-            return response
+                converted = gTTS(translation, lang='en')
+                converted.save("translation.mp3")
+                response = jsonify({"command": command, "translation": translation})
+                response.headers.add('Access-Control-Allow-Origin', '*')  # Adjust as needed
+                return response
 
-    except sr.UnknownValueError:
-        return jsonify({"error": "Google Speech Recognition could not understand audio"}), 400
-    except sr.RequestError as e:
-        return jsonify({"error": f"Could not request results from Google Speech Recognition service; {e}"}), 500
-    except Exception as e:
-        return jsonify({"error": f"An error occurred: {e}"}), 500
+        except sr.UnknownValueError:
+            return jsonify({"error": "Google Speech Recognition could not understand audio"}), 400
+        except sr.RequestError as e:
+            return jsonify({"error": f"Could not request results from Google Speech Recognition service; {e}"}), 500
+        except Exception as e:
+            return jsonify({"error": f"An error occurred: {e}"}), 500
 
 if __name__ == '__main__':
     app.run(port=5001, debug=True)
